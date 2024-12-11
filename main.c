@@ -6,7 +6,7 @@
 /*   By: yregragu <yregragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 03:41:09 by yregragu          #+#    #+#             */
-/*   Updated: 2024/12/09 04:27:45 by yregragu         ###   ########.fr       */
+/*   Updated: 2024/12/11 06:10:01 by yregragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,57 +15,98 @@
 
 void	*routine()
 {
-	// int i;
-	// for(i= 0; i < 10000000; i++)
-	// {
-		// m++;
-	// }
+	
 }
 
-void	run_threads(philo_t *philo)
+void	run_threads(data_t *data, philo_t *philo)
 {
-	pthread_t	th[philo->N_philo];
 	int			i;
 
 	i = 0;
-	while (i < philo->N_philo)
+	while (i < data->N_philo)
 	{
-		pthread_create(&th[i], NULL, &routine, NULL);
+		pthread_create(&philo->thread, NULL, &routine, NULL);
 		printf("thread number %i created\n", i);
 		i++;
 	}
 	i = 0;
-	while(i < philo->N_philo)
+	while(i < data->N_philo)
 	{
-		pthread_join(th[i], NULL);
+		pthread_join(philo->thread, NULL);
  		printf("thread number %i finished\n", i);
 		i++;
 	}
 }
 
+void	ft_lstadd_back(philo_t *lst, philo_t *new)
+{
+	philo_t	*head;
+
+	head = lst;
+	if(!new)
+		return ;
+	if(!lst)
+		lst = new;
+	else
+	{
+		while (head->right)
+			head = head->right;
+		head->right = new;
+		new->right = NULL;
+	}	
+}
+void	ft_init(data_t *data, philo_t *philo, int ac, char **av)
+{
+	philo_t *new_philo;
+	philo_t	*tmp;
+	int		i;
+	
+	data->N_philo = ft_atoi(av[1]);
+	data->T_die = ft_atoi(av[2]);
+    data->T_eat = ft_atoi(av[3]);
+    data->T_sleep = ft_atoi(av[4]);
+	if(ac == 6)
+    	data->NofT_Eat = ft_atoi(av[5]);
+	else
+		data->NofT_Eat = 0;
+	pthread_mutex_init(&philo->left_fork, NULL);
+	pthread_mutex_init(&philo->right_fork, NULL);
+	philo->last_meal = 0;
+	philo->id = 1;
+	philo->left = NULL;
+	philo->right = NULL;
+	philo->data = data;
+	i = 2;
+	while (i <= data->N_philo)
+	{
+		new_philo = malloc(sizeof(philo_t));
+		new_philo->right = NULL;
+		new_philo->left = NULL;
+		new_philo->id = i;
+		new_philo->eating_times = data->NofT_Eat;
+		new_philo->data = data;
+		ft_lstadd_back(philo, new_philo);
+		tmp = philo;
+		philo = philo->right;
+		philo->left = tmp;
+		i++;
+	}
+	
+
+}	
 
 int main(int ac, char **av)
 {
-	philo_t *philo;
+	data_t *data;
+	philo_t	*philo;
 
-	if(!check_args(av, ac, philo))
+
+	if(!check_args(av, ac))
 	{
-		philo = malloc(sizeof(philo_t));
-		philo->N_philo = ft_atoi(av[1]);
-		philo->T_die = ft_atoi(av[2]);
-    	philo->T_eat = ft_atoi(av[3]);
-    	philo->T_sleep = ft_atoi(av[4]);
-		if(ac == 6)
-        	philo->NofT_Eat = ft_atoi(av[5]);
-		else
-			philo->NofT_Eat = 0;
-		// printf("struct: %i", philo->N_philo);
-    	// printf("struct: %i", philo->T_die);
-    	// printf("struct: %i", philo->T_eat);
-    	// printf("struct: %i", philo->T_sleep);
-    	// printf("struct: %i\n", philo->NofT_Eat);
-		run_threads(philo);
-		free(philo);
+		data = malloc(sizeof(data_t));
+		ft_init(data, philo, ac, av);
+		run_threads(data, philo);
+		free(data);
 	}
 	return (1);
 }

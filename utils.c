@@ -6,7 +6,7 @@
 /*   By: yregragu <yregragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 18:51:16 by yregragu          #+#    #+#             */
-/*   Updated: 2024/12/08 23:47:42 by yregragu         ###   ########.fr       */
+/*   Updated: 2024/12/11 03:25:19 by yregragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	ft_atoi(char *str)
 }
 
 
-int	check_args(char **av, int ac, philo_t *philo)
+int	check_args(char **av, int ac)
 {
 	int	i;
 
