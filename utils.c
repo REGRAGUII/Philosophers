@@ -6,7 +6,7 @@
 /*   By: yregragu <yregragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 18:51:16 by yregragu          #+#    #+#             */
-/*   Updated: 2024/12/11 03:25:19 by yregragu         ###   ########.fr       */
+/*   Updated: 2024/12/16 18:40:46 by yregragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int	check_args(char **av, int ac)
 	}
 	while(i < ac)
 	{
-        printf("her : %s\n", av[i]);
 		if(ft_atoi(av[i]) < 0)
         {
             printf("%s", ERROR_ARGS);
