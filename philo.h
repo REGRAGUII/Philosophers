@@ -6,7 +6,7 @@
 /*   By: yregragu <yregragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 23:41:28 by yregragu          #+#    #+#             */
-/*   Updated: 2024/12/16 18:39:48 by yregragu         ###   ########.fr       */
+/*   Updated: 2024/12/17 19:45:11 by yregragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,27 @@ typedef struct	data_s
 	int	NofT_Eat;
 	int	start;
 	int	end;
+	int	eats;
+	pthread_mutex_t eats_mutex;
 	pthread_mutex_t end_mutex;
+	pthread_mutex_t print;
+	pthread_t	checker;
+	long	start_time;
+	pthread_mutex_t time_mutex;
 }   data_t;
 
 typedef struct	philo_s
 {
 	int	id;
-	int eating_times;
-	int	last_meal;
+	// int eating_times;
+	long	last_meal;
+	pthread_mutex_t	last_meal_mutex;
+	
 	pthread_t	thread;
 	struct philo_s	*left;
 	struct philo_s	*right;
 	pthread_mutex_t	fork;
+	pthread_mutex_t eating_times;
 	data_t	*data;
 }	philo_t;
 
