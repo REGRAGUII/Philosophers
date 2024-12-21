@@ -1,4 +1,4 @@
-CC = cc -fsanitize=thread -g3
+CC = cc  -g3
 # CFLAGS = -Wall -Werror -Wextra
 THREAD = -pthread
 

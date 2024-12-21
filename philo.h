@@ -6,7 +6,7 @@
 /*   By: yregragu <yregragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 23:41:28 by yregragu          #+#    #+#             */
-/*   Updated: 2024/12/17 19:45:11 by yregragu         ###   ########.fr       */
+/*   Updated: 2024/12/21 23:49:56 by yregragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,38 +32,38 @@ typedef struct	data_s
 	int	T_eat;
 	int	T_sleep;
 	int	NofT_Eat;
-	int	start;
 	int	end;
 	int	eats;
+	long	start_time;
 	pthread_mutex_t eats_mutex;
 	pthread_mutex_t end_mutex;
 	pthread_mutex_t print;
 	pthread_t	checker;
-	long	start_time;
 	pthread_mutex_t time_mutex;
 }   data_t;
 
 typedef struct	philo_s
 {
 	int	id;
-	// int eating_times;
 	long	last_meal;
-	pthread_mutex_t	last_meal_mutex;
-	
+	int		n_eats;
 	pthread_t	thread;
 	struct philo_s	*left;
 	struct philo_s	*right;
 	pthread_mutex_t	fork;
+	pthread_mutex_t	last_meal_mutex;
 	pthread_mutex_t eating_times;
 	data_t	*data;
 }	philo_t;
 
 
-
+int my_printf(char *msg, philo_t *philo, int stats);
 int	check_args(char **av, int ac);
 int	ft_isdigit(int x);
 int	ft_atoi(char *str);
 int	is_int(char *args);
+void clean(data_t *data, philo_t *philo);
+void ft_lstadd_back(philo_t *lst, philo_t *new);
 
 
 #endif
