@@ -6,7 +6,7 @@
 /*   By: yregragu <yregragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 15:35:45 by yregragu          #+#    #+#             */
-/*   Updated: 2024/12/22 16:17:02 by yregragu         ###   ########.fr       */
+/*   Updated: 2024/12/22 18:26:30 by yregragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,27 +59,29 @@ int	check_time(philo_t *philo)
 {
 	long time;
 
-	
-	if (is_dead(philo))
+	pthread_mutex_lock(&philo->eating_times);
+	if ((philo->data->NofT_Eat == -1  &&  is_dead(philo))|| (philo->n_eats < philo->data->NofT_Eat &&  is_dead(philo)))
 	{
-		pthread_mutex_lock(&philo->data->print);
+	    pthread_mutex_unlock(&philo->eating_times);
 		time = get_time() - philo->data->start_time;
+		pthread_mutex_lock(&philo->data->print);
 		printf("%ld  %d  died\n",time,  philo->id);
 		pthread_mutex_unlock(&philo->data->print);
 		return (1);
 	}
+    pthread_mutex_unlock(&philo->eating_times);
 	return (0);
 }
 
 int	check_eats(philo_t *philo)
 {
-	pthread_mutex_lock(&philo->data->eats_mutex);
-	if (philo->data->eats == philo->data->N_philo - 1)
+	pthread_mutex_lock(&philo->data->finished_mutex);
+	if (philo->data->finished == philo->data->N_philo)
 	{
-		pthread_mutex_unlock(&philo->data->eats_mutex);
+		pthread_mutex_unlock(&philo->data->finished_mutex);
 		return (1);
 	}
-	pthread_mutex_unlock(&philo->data->eats_mutex);
+	pthread_mutex_unlock(&philo->data->finished_mutex);
 	return (0);
 } 
 void	*checker(void *param)
@@ -91,12 +93,13 @@ void	*checker(void *param)
 	{
 		if (check_eats(philo))
 		{
-			return (NULL);
+			break;
 		}
 		if (check_time(philo))
 		{
-			return (NULL);
+			break;
 		}
+		
 		if(philo->right)
 			philo = philo->right;
 	}

@@ -6,7 +6,7 @@
 /*   By: yregragu <yregragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 23:41:28 by yregragu          #+#    #+#             */
-/*   Updated: 2024/12/22 16:15:55 by yregragu         ###   ########.fr       */
+/*   Updated: 2024/12/22 19:04:00 by yregragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,13 @@ typedef struct	data_s
 	int	T_sleep;
 	int	NofT_Eat;
 	int	end;
-	
-	int	eats;
-	pthread_mutex_t eats_mutex;
-	
 	long	start_time;
 	pthread_mutex_t end_mutex;
 	pthread_mutex_t print;
 	pthread_t	checker;
 	pthread_mutex_t time_mutex;
+	pthread_mutex_t finished_mutex;
+	int				finished;
 }   data_t;
 
 typedef struct	philo_s
@@ -59,7 +57,7 @@ typedef struct	philo_s
 }	philo_t;
 
 
-void	my_printf(char *msg, philo_t *philo, int stats);
+void	my_printf(char *msg, philo_t *philo);
 int		check_args(char **av, int ac);
 int		ft_isdigit(int x);
 int		ft_atoi(char *str);

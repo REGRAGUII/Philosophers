@@ -6,7 +6,7 @@
 /*   By: yregragu <yregragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 18:51:16 by yregragu          #+#    #+#             */
-/*   Updated: 2024/12/21 23:03:44 by yregragu         ###   ########.fr       */
+/*   Updated: 2024/12/22 18:49:30 by yregragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,9 @@ void clean(data_t *data, philo_t *philo)
 		free(tmp);
 		i--;
 	}
-	pthread_mutex_destroy(&data->eats_mutex);
 	pthread_mutex_destroy(&data->end_mutex);
 	pthread_mutex_destroy(&data->print);
 	pthread_mutex_destroy(&data->time_mutex);
+	pthread_mutex_destroy(&data->finished_mutex);
 	free(data);
 }
