@@ -6,7 +6,7 @@
 /*   By: yregragu <yregragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 15:35:45 by yregragu          #+#    #+#             */
-/*   Updated: 2024/12/22 18:26:30 by yregragu         ###   ########.fr       */
+/*   Updated: 2024/12/22 20:05:56 by yregragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	opt_sleep(size_t milliseconds, data_t *data)
 int	is_dead(philo_t *philo)
 {
 	pthread_mutex_lock(&philo->last_meal_mutex);
-	if (get_time() - philo->last_meal > philo->data->T_die)
+	if (get_time() - philo->last_meal > philo->data->t_die)
 	{
 		pthread_mutex_unlock(&philo->last_meal_mutex);
 		pthread_mutex_lock(&philo->data->end_mutex);
@@ -60,7 +60,7 @@ int	check_time(philo_t *philo)
 	long time;
 
 	pthread_mutex_lock(&philo->eating_times);
-	if ((philo->data->NofT_Eat == -1  &&  is_dead(philo))|| (philo->n_eats < philo->data->NofT_Eat &&  is_dead(philo)))
+	if ((philo->data->noft_eat == -1  &&  is_dead(philo))|| (philo->n_eats < philo->data->noft_eat &&  is_dead(philo)))
 	{
 	    pthread_mutex_unlock(&philo->eating_times);
 		time = get_time() - philo->data->start_time;
@@ -76,7 +76,7 @@ int	check_time(philo_t *philo)
 int	check_eats(philo_t *philo)
 {
 	pthread_mutex_lock(&philo->data->finished_mutex);
-	if (philo->data->finished == philo->data->N_philo)
+	if (philo->data->finished == philo->data->n_philo)
 	{
 		pthread_mutex_unlock(&philo->data->finished_mutex);
 		return (1);
@@ -91,16 +91,10 @@ void	*checker(void *param)
 	philo = (philo_t *)param;
 	while (1)
 	{
-		if (check_eats(philo))
-		{
+		if (check_eats(philo) || check_time(philo))
 			break;
-		}
-		if (check_time(philo))
-		{
-			break;
-		}
-		
 		if(philo->right)
 			philo = philo->right;
 	}
+	return (NULL);
 }

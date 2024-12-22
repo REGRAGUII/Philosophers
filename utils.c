@@ -6,7 +6,7 @@
 /*   By: yregragu <yregragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 18:51:16 by yregragu          #+#    #+#             */
-/*   Updated: 2024/12/22 18:49:30 by yregragu         ###   ########.fr       */
+/*   Updated: 2024/12/22 19:21:26 by yregragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void clean(data_t *data, philo_t *philo)
 	int 	i;
 
 	tmp = philo;
-	i = data->N_philo;
+	i = data->n_philo;
 	while(i > 0)
 	{
 		pthread_mutex_destroy(&philo->fork);
@@ -94,4 +94,22 @@ void clean(data_t *data, philo_t *philo)
 	pthread_mutex_destroy(&data->time_mutex);
 	pthread_mutex_destroy(&data->finished_mutex);
 	free(data);
+}
+
+void my_printf(char *msg, philo_t *philo)
+{
+	long time;
+
+	time = get_time() - philo->data->start_time;
+	pthread_mutex_lock(&philo->data->print);
+	pthread_mutex_lock(&philo->data->end_mutex);
+	if(philo->data->end == 0)
+	{
+		pthread_mutex_unlock(&philo->data->end_mutex);
+		pthread_mutex_unlock(&philo->data->print);
+		return ;
+	}
+	pthread_mutex_unlock(&philo->data->end_mutex);
+	printf("%ld  %d  %s\n",time,  philo->id, msg);
+	pthread_mutex_unlock(&philo->data->print);
 }

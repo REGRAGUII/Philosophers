@@ -6,7 +6,7 @@
 /*   By: yregragu <yregragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 23:41:28 by yregragu          #+#    #+#             */
-/*   Updated: 2024/12/22 19:04:00 by yregragu         ###   ########.fr       */
+/*   Updated: 2024/12/22 19:26:41 by yregragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@
 
 typedef struct	data_s
 {
-	int	N_philo;
-	int	T_die;
-	int	T_eat;
-	int	T_sleep;
-	int	NofT_Eat;
+	int	n_philo;
+	int	t_die;
+	int	t_eat;
+	int	t_sleep;
+	int	noft_eat;
 	int	end;
 	long	start_time;
 	pthread_mutex_t end_mutex;
@@ -67,6 +67,8 @@ void	ft_lstadd_back(philo_t *lst, philo_t *new);
 long	get_time(void);
 int		opt_sleep(size_t milliseconds, data_t *data);
 void	*checker(void *param);
+void	*routine(void *ph);
+int		stats(philo_t *philo);
 
 
 #endif
