@@ -1,10 +1,10 @@
-CC = cc  -g3
+CC = cc -fsanitize=thread -g3
 # CFLAGS = -Wall -Werror -Wextra
 THREAD = -pthread
 
 NAME = philo
 
-SOURCE = main.c utils.c
+SOURCE = main.c utils.c opt_sleep.c
 
 all : $(NAME)
 

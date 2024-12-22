@@ -6,7 +6,7 @@
 /*   By: yregragu <yregragu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 23:41:28 by yregragu          #+#    #+#             */
-/*   Updated: 2024/12/21 23:49:56 by yregragu         ###   ########.fr       */
+/*   Updated: 2024/12/22 16:15:55 by yregragu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,11 @@ typedef struct	data_s
 	int	T_sleep;
 	int	NofT_Eat;
 	int	end;
+	
 	int	eats;
-	long	start_time;
 	pthread_mutex_t eats_mutex;
+	
+	long	start_time;
 	pthread_mutex_t end_mutex;
 	pthread_mutex_t print;
 	pthread_t	checker;
@@ -57,13 +59,16 @@ typedef struct	philo_s
 }	philo_t;
 
 
-int my_printf(char *msg, philo_t *philo, int stats);
-int	check_args(char **av, int ac);
-int	ft_isdigit(int x);
-int	ft_atoi(char *str);
-int	is_int(char *args);
-void clean(data_t *data, philo_t *philo);
-void ft_lstadd_back(philo_t *lst, philo_t *new);
+void	my_printf(char *msg, philo_t *philo, int stats);
+int		check_args(char **av, int ac);
+int		ft_isdigit(int x);
+int		ft_atoi(char *str);
+int		is_int(char *args);
+void	clean(data_t *data, philo_t *philo);
+void	ft_lstadd_back(philo_t *lst, philo_t *new);
+long	get_time(void);
+int		opt_sleep(size_t milliseconds, data_t *data);
+void	*checker(void *param);
 
 
 #endif
