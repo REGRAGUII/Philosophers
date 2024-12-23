@@ -3,19 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   run_threads.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yregragu <yregragu@student.42.fr>          +#+  +:+       +#+        */
+/*   By: youssef <youssef@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/22 19:13:18 by yregragu          #+#    #+#             */
-/*   Updated: 2024/12/22 20:14:18 by yregragu         ###   ########.fr       */
+/*   Updated: 2024/12/23 00:29:29 by youssef          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	eating(philo_t *philo)
+void take_forks(philo_t *philo)
 {
-	if (stats(philo))
-		return (1);
 	if (philo->id % 2 == 0)
 	{
 		pthread_mutex_lock(&philo->fork);
@@ -30,6 +28,13 @@ int	eating(philo_t *philo)
 		pthread_mutex_lock(&philo->fork);
 		my_printf("has taken a fork", philo);
 	}
+}
+
+int	eating(philo_t *philo)
+{
+	if (stats(philo))
+		return (1);
+	take_forks(philo);
 	pthread_mutex_lock(&philo->last_meal_mutex);
 	philo->last_meal = get_time();
 	pthread_mutex_unlock(&philo->last_meal_mutex);
